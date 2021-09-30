@@ -1,2 +1,2 @@
-##SDL Learning Project
-## Copyright? No thanks.
+## SDL Learning Project
+Copyright? No thanks.
