@@ -16,7 +16,6 @@
 #include <boost/geometry/geometries/polygon.hpp>
 #include "EngineBase.h"
 
-
 #define GlobalFrameRate (50)
 #define MUSIC
 #define SINTABSIZE (720)

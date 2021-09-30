@@ -21,6 +21,9 @@
     <ClCompile Include="Rotator.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Pointlist2D.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="zlib1.dll">
@@ -98,6 +101,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="GeometryF.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Pointlist2D.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

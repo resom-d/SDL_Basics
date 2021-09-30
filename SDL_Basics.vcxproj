@@ -187,12 +187,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MainApplication.cpp" />
+    <ClCompile Include="Pointlist2D.cpp" />
     <ClCompile Include="Rotator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineBase.h" />
     <ClInclude Include="GeometryF.h" />
     <ClInclude Include="MainApplication.h" />
+    <ClInclude Include="Pointlist2D.h" />
     <ClInclude Include="Rotator.h" />
     <ClInclude Include="GameEvents.h" />
     <ClInclude Include="Basics.h" />

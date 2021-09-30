@@ -2,6 +2,8 @@
 #include "MainApplication.h"
 
 Rotator theRotator;
+float Sintable[SINTABSIZE];
+float Costable[SINTABSIZE];
 
 int main(int argc, char* argv[]) {
 
@@ -20,7 +22,7 @@ MainApplication::MainApplication()
 	WindowFrame.h = 900;
 	WindowFrame.x = 50;
 	WindowFrame.y = 50;
-	
+
 }
 
 bool MainApplication::OnInit()
@@ -34,9 +36,9 @@ bool MainApplication::OnInit()
 	{
 		return false;
 	}
-	
+
 	int r = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	
+
 	if (SDL_NumJoysticks() > 0) GamePad = SDL_JoystickOpen(0);
 
 	if ((AppWindow = SDL_CreateWindow(
@@ -50,17 +52,17 @@ bool MainApplication::OnInit()
 
 	if ((Renderer = SDL_CreateRenderer(AppWindow, -1, SDL_RENDERER_ACCELERATED)) == nullptr) return false;
 
-	#ifdef MUSIC
+#ifdef MUSIC
 	tune = Mix_LoadMUS("Resources\music\The impossible Mission.mp3");
 	Mix_PlayMusic(tune, -1);
-	#endif
+#endif
 
 	double alpha = 0.0;
 	for (int i = 0; i < SINTABSIZE; i++)
 	{
-		Sintable[i] = sin(alpha * M_PI / 180.0);
-		Costable[i] = cos(alpha * M_PI / 180.0);
-		alpha += 0.5;
+		Sintable[i] = (float)sin(alpha * M_PI / 180.0);
+		Costable[i] = (float)cos(alpha * M_PI / 180.0);
+		alpha += 0.5f;
 	}
 
 	theRotator = Rotator(Renderer, WindowFrame);
@@ -113,7 +115,7 @@ int MainApplication::OnExecute()
 	OnCleanup();
 
 	return 0;
-		
+
 }
 
 void MainApplication::OnLoop()
@@ -124,6 +126,7 @@ void MainApplication::OnLoop()
 void MainApplication::OnRender()
 {
 	theRotator.OnRender();
+	SDL_RenderPresent(Renderer);
 }
 
 void MainApplication::OnCleanup()
