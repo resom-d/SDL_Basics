@@ -113,13 +113,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="_Zehnfinger_Ideas.txt">
-      <Filter>Ressourcendateien</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <Media Include="Resources\music\The impossible Mission.mp3">
       <Filter>Ressourcendateien</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Readme.md">
+      <Filter>Ressourcendateien</Filter>
+    </None>
+    <None Include="LICENSE">
+      <Filter>Ressourcendateien</Filter>
+    </None>
   </ItemGroup>
 </Project>

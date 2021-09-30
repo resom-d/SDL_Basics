@@ -262,12 +262,13 @@
     <ResourceCompile Include="SDL_GameBase.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="_Zehnfinger_Ideas.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Media Include="Resources\music\The impossible Mission.mp3">
       <DeploymentContent>true</DeploymentContent>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="Readme.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
