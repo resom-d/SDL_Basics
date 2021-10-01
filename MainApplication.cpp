@@ -38,6 +38,7 @@ bool MainApplication::OnInit()
 	}
 
 	int r = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	int flags = MIX_INIT_OGG | MIX_INIT_MOD|MIX_INIT_MP3;
 
 	if (SDL_NumJoysticks() > 0) GamePad = SDL_JoystickOpen(0);
 
@@ -53,7 +54,7 @@ bool MainApplication::OnInit()
 	if ((Renderer = SDL_CreateRenderer(AppWindow, -1, SDL_RENDERER_ACCELERATED)) == nullptr) return false;
 
 #ifdef MUSIC
-	tune = Mix_LoadMUS("Resources\music\The impossible Mission.mp3");
+	tune = Mix_LoadMUS("Resources/music/The impossible Mission.mp3");
 	Mix_PlayMusic(tune, -1);
 #endif
 

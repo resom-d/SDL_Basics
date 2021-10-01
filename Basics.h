@@ -26,7 +26,7 @@ struct  _polygon_2D {
 typedef struct _polygon_2D Polygon2D;
 
 
-#define GlobalFrameRate (24)
+#define GlobalFrameRate (50)
 #define MUSIC
 #define SINTABSIZE (720)
 

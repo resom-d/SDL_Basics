@@ -37,7 +37,7 @@ bool Rotator::OnInit()
 
 	_rotationV = 0;
 
-//	_hexagon = Pointlist2D(_hexagonP, 6);
+	//	_hexagon = Pointlist2D(_hexagonP, 6);
 	_starfigure = Pointlist2D(_starFigureP, 16);
 
 	return true;
@@ -74,20 +74,42 @@ void Rotator::OnLoop()
 	}
 	else
 	{
-		_scaleVY += _zoomX;
 		_scaleVX += _zoomX;
-
-		if (_scaleVX > 12.0)
+		_scaleVY += _zoomX;
+		if (_scaleVX > 20.0 || _scaleVX < 0.8)
 		{
 			_zoomX *= -1;
-			_framePause = 4 * GlobalFrameRate;
+			if (_scaleVX < 0.8) _framePause = 12 * GlobalFrameRate;
 		}
-		if (_scaleVX < 0.6)
-		{
-			_zoomX *= -1;
-			_framePause = 8 * GlobalFrameRate;
-		}
+	}
 
+	if (_framePause1 > 0)
+	{
+		_framePause1--;
+	}
+	else
+	{
+		_scaleVX1 += _zoomX1;
+		_scaleVY1 += _zoomX1;
+		if (_scaleVX1 > 8.0 || _scaleVX1 < 0.6)
+		{
+			_zoomX1 *= -1;
+			_framePause1 = 2 * GlobalFrameRate;
+		}
+	}
+	if (_framePause2 > 0)
+	{
+		_framePause2--;
+	}
+	else
+	{
+		_scaleVX2 += _zoomX2;
+		_scaleVY2 += _zoomX2;
+		if (_scaleVX2 > 8.0 || _scaleVX2 < 0.6)
+		{
+			_zoomX2 *= -1;
+			_framePause2 = 2 * GlobalFrameRate;
+		}
 	}
 };
 
@@ -103,66 +125,66 @@ void Rotator::OnRender()
 	SDL_RenderClear(_renderer);
 	SDL_RenderFillRect(_renderer, nullptr);
 
-	c = { 255,220,200,255 };
+	c = { 255,255,0,255 };
 	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
 	_starfigure.TranslatePoints(true, fp);
 	_starfigure.RotatePoints(false, rp, _rotationV);
-	_starfigure.ScalePoints(false, fp, 60*_scaleVX,60*_scaleVY);
-	for (int i = 0; i < 10;i++)
-	{
-		_starfigure.DrawPolygon(_renderer, true);
-		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
-	}	
-	c = { 0,0,255,255 };
-	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
-	_starfigure.TranslatePoints(true, fp);
-	_starfigure.RotatePoints(false, rp, _rotationV1);
-	_starfigure.ScalePoints(false, fp, 80 * _scaleVX, 80 * _scaleVY);
-	for (int i = 0; i < 10; i++)
+	_starfigure.ScalePoints(false, fp, 100 * _scaleVX, 100 * _scaleVY);
+	for (int i = 0; i < 4; i++)
 	{
 		_starfigure.DrawPolygon(_renderer, true);
 		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
 	}
-	c = { 200,0,255,255 };
+	c = { 0,0,255,255 };
+	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
+	_starfigure.TranslatePoints(true, fp);
+	_starfigure.RotatePoints(false, rp, _rotationV1);
+	_starfigure.ScalePoints(false, fp, 90 * _scaleVX, 90 * _scaleVY);
+	for (int i = 0; i < 4; i++)
+	{
+		_starfigure.DrawPolygon(_renderer, true);
+		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
+	}
+	c = { 255,0,0,255 };
 	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
 	_starfigure.TranslatePoints(true, fp);
 	_starfigure.RotatePoints(false, rp, _rotationV2);
-	_starfigure.ScalePoints(false, fp, 100 * _scaleVX, 100 * _scaleVY);
-	for (int i = 0; i < 10; i++)
+	_starfigure.ScalePoints(false, fp, 80 * _scaleVX, 80 * _scaleVY);
+	for (int i = 0; i < 4; i++)
 	{
 		_starfigure.DrawPolygon(_renderer, true);
 		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
 	}
 
-	c = { 0,255,0,255 };
-	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
-	_starfigure.TranslatePoints(true, fp);
-	_starfigure.RotatePoints(false, rp, (SINTABSIZE- _rotationV2)%SINTABSIZE);
-	_starfigure.ScalePoints(false, fp, 100 * _scaleVX, 100 * _scaleVY);
-	for (int i = 0; i < 10; i++)
-	{
-		_starfigure.DrawPolygon(_renderer, true);
-		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.7, 0.7);
-	}
-	c = { 255,0,0,255 };
-	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
-	_starfigure.TranslatePoints(true, fp);
-	_starfigure.RotatePoints(false, rp, (SINTABSIZE - _rotationV1) % SINTABSIZE);
-	_starfigure.ScalePoints(false, fp, 80 * _scaleVX, 80 * _scaleVY);
-	for (int i = 0; i < 10; i++)
-	{
-		_starfigure.DrawPolygon(_renderer, true);
-		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.7, 0.7);
-	}
-	c = { 255,255,0,255 };
+	c = { 255,255,255,255 };
 	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
 	_starfigure.TranslatePoints(true, fp);
 	_starfigure.RotatePoints(false, rp, (SINTABSIZE - _rotationV) % SINTABSIZE);
-	_starfigure.ScalePoints(false, fp, 60 * _scaleVX, 60 * _scaleVY);
-	for (int i = 0; i < 10; i++)
+	_starfigure.ScalePoints(false, fp, 100 * _scaleVX, 100 * _scaleVY);
+	for (int i = 0; i < 4; i++)
 	{
 		_starfigure.DrawPolygon(_renderer, true);
-		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.7, 0.7);
+		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
+	}
+	c = { 0,255,0,255 };
+	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
+	_starfigure.TranslatePoints(true, fp);
+	_starfigure.RotatePoints(false, rp, (SINTABSIZE - _rotationV1) % SINTABSIZE);
+	_starfigure.ScalePoints(false, fp, 90 * _scaleVX, 90 * _scaleVY);
+	for (int i = 0; i < 4; i++)
+	{
+		_starfigure.DrawPolygon(_renderer, true);
+		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
+	}
+	c = { 255,0,255,255 };
+	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
+	_starfigure.TranslatePoints(true, fp);
+	_starfigure.RotatePoints(false, rp, (SINTABSIZE - _rotationV2) % SINTABSIZE);
+	_starfigure.ScalePoints(false, fp, 80 * _scaleVX, 80 * _scaleVY);
+	for (int i = 0; i < 4; i++)
+	{
+		_starfigure.DrawPolygon(_renderer, true);
+		_starfigure.ScalePoints(false, _starfigure.CentreOfRotation, 0.6, 0.6);
 	}
 }
 
