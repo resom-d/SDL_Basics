@@ -192,7 +192,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineBase.h" />
-    <ClInclude Include="GeometryF.h" />
     <ClInclude Include="MainApplication.h" />
     <ClInclude Include="Pointlist2D.h" />
     <ClInclude Include="Rotator.h" />

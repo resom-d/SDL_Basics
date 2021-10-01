@@ -100,9 +100,6 @@
     <ClInclude Include="EngineBase.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GeometryF.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Pointlist2D.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>

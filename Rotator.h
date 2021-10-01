@@ -1,5 +1,4 @@
 #include "Basics.h"
-#include "GeometryF.h"
 #include "Pointlist2D.h"
 
 class Rotator : public EngineBase
@@ -49,15 +48,15 @@ private:
 	int _rotationV = 0;
 	int _rotationV1 = 45;
 	int _rotationV2 = 90;
-	float _scaleVX = 0.4;
-	float _scaleVY = 0.4;
+	float _scaleVX = 0.6;
+	float _scaleVY = 0.6;
 	float _scaleVX1 = 1.0;
 	float _scaleVX2 = 1.0;
 	float _scaleVY1 = 1.0;
 	float _scaleVY2 = 1.0;
-	float _zoomX = 0.02;
+	float _zoomX = 0.04;
 	long _frameCounter = 0;
-	long _framePause = 4 * GlobalFrameRate;
+	long _framePause = 8 * GlobalFrameRate;
 	
 protected:
 

@@ -16,7 +16,17 @@
 #include <boost/geometry/geometries/polygon.hpp>
 #include "EngineBase.h"
 
-#define GlobalFrameRate (50)
+struct  _polygon_2D {
+	SDL_FPoint* Points;
+	SDL_FPoint* PointsBuffer;
+	unsigned short CountP;
+	SDL_FPoint LocalOriginP;
+	SDL_Rect BoundingBox;
+};
+typedef struct _polygon_2D Polygon2D;
+
+
+#define GlobalFrameRate (24)
 #define MUSIC
 #define SINTABSIZE (720)
 
