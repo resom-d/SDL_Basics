@@ -30,7 +30,7 @@ void TextScroller::OnLoop()
 	{
 		for (auto loop = 0; loop < _speed; loop++)
 		{
-			if (++_currentPosition > _lastItemWidth)
+			if (++_currentPosition > _lastItemWidth|| _screenItems.size() < 1)
 			{
 				_currentPosition = 0;
 				if (_charIndex < _theMessage.length())
@@ -66,8 +66,7 @@ void TextScroller::OnLoop()
 		if (_screenItems.size() < 1)
 		{
 			_charIndex = 0;
-			_repeatPause = 10 * GlobalFrameRate;
-			_currentPosition = 10000;
+			_repeatPause = 0 * GlobalFrameRate;
 		}
 	}
 	GotRenderItems = _screenItems.size() > 0;
@@ -75,24 +74,26 @@ void TextScroller::OnLoop()
 
 void TextScroller::OnRender()
 {
-	SDL_Rect r = DisplayRect;
-	//SDL_RenderSetClipRect(_rend, &r);
-	for (auto item = _screenItems.begin(); item != _screenItems.end(); item++)
+	if (GotRenderItems)
 	{
-		//SDL_SetTextureAlphaMod(item->Texture, 255);
-		if (item->ScreenPos.x > DisplayRect.w + DisplayRect.x - 255)
+		SDL_Rect r = DisplayRect;
+		//SDL_RenderSetClipRect(_rend, &r);
+		for (auto item = _screenItems.begin(); item != _screenItems.end(); item++)
 		{
-			SDL_SetTextureAlphaMod(item->Texture, DisplayRect.w + DisplayRect.x -  item->ScreenPos.x);
+			if (item->ScreenPos.x > DisplayRect.w + DisplayRect.x - 255)
+			{
+				SDL_SetTextureAlphaMod(item->Texture, DisplayRect.w + DisplayRect.x - item->ScreenPos.x);
+			}
+			if (item->ScreenPos.x < DisplayRect.x + 255 - item->Width)
+			{
+				SDL_SetTextureAlphaMod(item->Texture, item->ScreenPos.x + item->Width - DisplayRect.x);
+			}
+			auto a = ((int)(item->ScreenPos.x)) % SINTABSIZE;
+			auto y = DisplayRect.y - (Sintable[a] * 16.0);
+			SDL_Rect sRect = { 0,0, item->Width, item->Height };
+			SDL_Rect dRect = { item->ScreenPos.x, y, item->Width, item->Height };
+			SDL_RenderCopy(_rend, item->Texture, &sRect, &dRect);
 		}
-		if (item->ScreenPos.x < DisplayRect.x + 255 - item->Width)
-		{
-			SDL_SetTextureAlphaMod(item->Texture,  item->ScreenPos.x  + item->Width - DisplayRect.x);
-		}
-		auto a = ((int)(item->ScreenPos.x)) % SINTABSIZE;
-		auto y = DisplayRect.y - (Sintable[a] * 16.0);
-		SDL_Rect sRect = { 0,0, item->Width, item->Height };
-		SDL_Rect dRect = { item->ScreenPos.x, y, item->Width, item->Height };
-		SDL_RenderCopy(_rend, item->Texture, &sRect, &dRect);
 	}
 }
 

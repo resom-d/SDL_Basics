@@ -267,15 +267,9 @@
     <ResourceCompile Include="SDL_GameBase.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Resources\music\Desolation.mp3" />
-    <Media Include="Resources\music\GhostWalking.mp3" />
-    <Media Include="Resources\music\The impossible Mission.mp3">
-      <DeploymentContent>true</DeploymentContent>
-    </Media>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="LICENSE" />
     <None Include="Readme.md" />
+    <None Include="Resources\music\TheSecret.ogg" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\fonts\segoeui.ttf" />

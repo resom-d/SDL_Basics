@@ -12,6 +12,7 @@ CharacterTextureMap CharMap;
 
 float Sintable[SINTABSIZE];
 float Costable[SINTABSIZE];
+//string s = "Hello, SDL!";
 
 int main(int argc, char* argv[]) {
 
@@ -35,7 +36,7 @@ MainApplication::MainApplication()
 
 bool MainApplication::OnInit()
 {
-	if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		return false;
 	}
@@ -78,23 +79,22 @@ bool MainApplication::OnInit()
 	theStarfield = Starfield(Renderer, WindowFrame);
 	theStarfield.OnInit();
 
-	string s = "Hank Van Bastard presents:                                                                  A Galactic Geometry Show.                                                                                        \
-Ain't math beautiful? A simple polygon, some colors and a little M*A*T*H.                   \
-Right now this piece of code uses (mathematically) 2D scaling, rotation and translation. That's it.                                              \
-Hank used the follwoing  tools to create this ride:   Visual Studio Community,  GeoGebra,  Git, Gimp, Inkscape.                                       \
-And of course in this case specifically the SDL-Library.                                   \
-All these great tools are free software.    Thanks for the excellent stuff dudes - it's very much appreciated.                                                \
-Idea by Hank, Coding: Hank.                                                               \
-Music: 'The Impossible Mission' by Alien Sex Fiend.                                                                            \
-In case you'd like to contact the author, send a message to                                      'hankvanbastard@gmail.com'                                                              \
+	string s = "Hank Van Bastard presents:                                                                  A Galactic Geometry Show.                                                                                                               \
+Ain't math beautiful? A simple polygon, some colors and a little M*A*T*H.                                               \
+Right now this piece of code uses (mathematically) 2D scaling, rotation and translation. That's it.                                                                       \
+Hank used the following  tools to create this ride:   Visual Studio Community,  GeoGebra,  Git, Gimp, Inkscape.                                                 \
+And of course in this case specifically the SDL-Library.                                                     \
+All these great tools are free software.    Thanks for the excellent stuff dudes - it's very much appreciated.                                                             \
+Idea and coding: Hank.                                                  Music: 'TheSecret' by Hank.                                                               \
+In case you'd like to contact the world's greatest bastard, send a message to                                      'hankvanbastard@gmail.com'                                                              \
 Remember:    a bastard's work is never done.";
+
+
 	SDL_Rect dRect = { 200, WindowFrame.h - 200, WindowFrame.w - 400, 200 };
 	theScroller.OnInit(Renderer, s, _font, { 255, 255, 255, 255 }, 6, dRect);
 
 #ifdef MUSIC
-	tune[0] = Mix_LoadMUS("Resources/music/Desolation.mp3");
-	tune[1] = Mix_LoadMUS("Resources/music/GhostWalking.mp3");
-	tune[2] = Mix_LoadMUS("Resources/music/The impossible Mission.mp3");
+	tune[0] = Mix_LoadMUS("Resources/music/TheSecret.ogg");	
 #endif
 
 	SDL_ShowWindow(AppWindow);
@@ -159,15 +159,15 @@ void MainApplication::OnLoop()
 	else
 	{
 		theRotator.OnLoop();
-	}
-	theScroller.OnLoop();
 
 #ifdef MUSIC
-	if (Mix_PlayingMusic() == 0)
-	{
-		Mix_PlayMusic(tune[2], 1);
-	}
+		if (Mix_PlayingMusic() == 0)
+		{
+			Mix_PlayMusic(tune[_actiTune++ % 1], 1);
+		}
 #endif
+	}
+	theScroller.OnLoop();
 }
 
 void MainApplication::OnRender()
@@ -179,17 +179,16 @@ void MainApplication::OnRender()
 	srect.w = WindowFrame.w;
 	srect.h = WindowFrame.h;
 
-	SDL_SetRenderDrawColor(Renderer, c.r, c.g, c.b, 255);
 	SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderSetClipRect(Renderer, &srect);
+	SDL_SetRenderDrawColor(Renderer, c.r, c.g, c.b, 255);
+	//SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_NONE);
+	SDL_RenderSetClipRect(Renderer, nullptr);
 	// clear Target
 	SDL_RenderClear(Renderer);
 	// black background
 	SDL_RenderFillRect(Renderer, &srect);
 
-	SDL_RenderSetClipRect(Renderer, &srect);
 	theStarfield.OnRender();
-	theScroller.OnRender();
 	if (_initPause > 0)
 	{
 		_initPause--;
@@ -198,12 +197,14 @@ void MainApplication::OnRender()
 	{
 		theRotator.OnRender();
 	}
-	
+	theScroller.OnRender();
+
 	SDL_RenderPresent(Renderer);
 }
 
 void MainApplication::OnCleanup()
 {
+	Mix_Quit();
 	theStarfield.OnCleanup();
 	theRotator.OnCleanup();
 	theScroller.OnCleanUp();

@@ -40,7 +40,7 @@ protected:
 	list<CharItem> _screenItems;
 	Uint16 _lastItemWidth;
 	Uint16 _charIndex;
-	int _repeatPause = 2 * GlobalFrameRate;
+	int _repeatPause = 4 * GlobalFrameRate;
 	
 		
 };

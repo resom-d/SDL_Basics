@@ -13,6 +13,11 @@ Starfield::Starfield(SDL_Renderer* rend, SDL_FRect winFrame)
 
 	_renderer = rend;
 
+	_stars = (SDL_Point**)SDL_malloc(_noStarKinds * sizeof(SDL_Point*));
+	for (int i = 0; i < _noStarKinds; i++)
+	{
+		_stars[i] = (SDL_Point*)SDL_malloc(_noStars * sizeof(SDL_Point));
+	}
 }
 
 bool Starfield::OnInit()
@@ -23,7 +28,7 @@ bool Starfield::OnInit()
 	{
 		for (int j = 0; j < _noStars; j++)
 		{
-			_stars[i][j].x = rand() % (int)_windowFrame.w;
+			_stars[i][j].x = rand() % (int)_windowFrame.w - _windowFrame.w;
 			_stars[i][j].y = rand() % (int)_windowFrame.h;
 		}
 	}
@@ -57,9 +62,10 @@ void Starfield::OnLoop()
 
 void Starfield::OnRender()
 {
+	SDL_Color c;
 	for (int i = 0; i < _noStarKinds; i++)
 	{
-		SDL_Color c = _starColors[i];
+		c = _starColors[i];
 		SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
 		for (int j = 0; j < _noStars; j++)
 		{
@@ -70,7 +76,11 @@ void Starfield::OnRender()
 
 void Starfield::OnCleanup()
 {
-
+	/*for (int i = 0; i < _noStarKinds;i++)
+	{
+		free(_stars[i]);
+	}*/
+	//free((SDL_Point**)_stars);
 }
 
 void Starfield::OnExit()

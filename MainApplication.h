@@ -30,5 +30,5 @@ private:
 	Uint16 _level;
 	int _timerCatchLevelDone;
 	Uint32 _timeCatchChangeScreens;
-	Uint16 _initPause = 21 * GlobalFrameRate;
+	Uint16 _initPause = 10 * GlobalFrameRate;
 };
