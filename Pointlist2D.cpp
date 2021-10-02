@@ -154,8 +154,12 @@ void Pointlist2D::DrawPolygon(SDL_Renderer* rend, bool closed)
 
 void Pointlist2D::BringHome()
 {
+	float minX = _geometry[0].x, maxX = _geometry[0].x, minY = _geometry[0].y, maxY = _geometry[0].y;
+
+	auto size = _geometry.size();
+	
 	setBoundingBox();
-	for (auto l = 0; l < _geometry.size(); l++)
+	for (auto l = 0; l < size; l++)
 	{
 		_geometry[l].x -= CentreOfRotation.x;
 		_geometry[l].y -= CentreOfRotation.y;
@@ -176,8 +180,8 @@ void Pointlist2D::setBoundingBox()
 	}
 	BoundingBox.x = minX;
 	BoundingBox.y = minY;
-	BoundingBox.w =abs(maxX) + abs(minX) ;
-	BoundingBox.h = abs(maxY) + abs(minY);
+	BoundingBox.w =maxX - minX ;
+	BoundingBox.h = maxY - minY;
 	CentreOfRotation.x = minX + BoundingBox.w / 2;
 	CentreOfRotation.y = minY + BoundingBox.h / 2;
 }

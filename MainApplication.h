@@ -25,9 +25,10 @@ public:
 
 private:
 	TTF_Font* _font;
-	Mix_Music* tune;
+	Mix_Music* tune[3];
+	Uint16 _actiTune=0;
 	Uint16 _level;
 	int _timerCatchLevelDone;
 	Uint32 _timeCatchChangeScreens;
-
+	Uint16 _initPause = 21 * GlobalFrameRate;
 };

@@ -7,6 +7,7 @@ class Rotator : public EngineBase
 public:
 	Rotator();
 	Rotator(SDL_Renderer *rend, SDL_FRect winFrame);
+
 	bool EngineBase::OnInit();
 	void EngineBase::OnEvent(SDL_Event* Event);
 	int EngineBase::OnExecute();
@@ -46,8 +47,8 @@ private:
 
 	SDL_FPoint _originP;
 	int _rotationV = 0;
-	int _rotationV1 = 45;
-	int _rotationV2 = 90;
+	int _rotationV1 = 0;
+	int _rotationV2 = 0;
 	float _scaleVX = 0.8;
 	float _scaleVY = 0.8;
 	float _scaleVX1 = 0.6;

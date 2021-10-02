@@ -24,6 +24,15 @@
     <ClCompile Include="Pointlist2D.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Starfield.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="TextScroller.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SDL_Extras.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="zlib1.dll">
@@ -103,6 +112,15 @@
     <ClInclude Include="Pointlist2D.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="Starfield.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="TextScroller.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SDL_Extras.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SDL_GameBase.rc">
@@ -113,6 +131,8 @@
     <Media Include="Resources\music\The impossible Mission.mp3">
       <Filter>Ressourcendateien</Filter>
     </Media>
+    <Media Include="Resources\music\Desolation.mp3" />
+    <Media Include="Resources\music\GhostWalking.mp3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Readme.md">
@@ -121,5 +141,10 @@
     <None Include="LICENSE">
       <Filter>Ressourcendateien</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\fonts\segoeui.ttf">
+      <Filter>Ressourcendateien</Filter>
+    </Font>
   </ItemGroup>
 </Project>

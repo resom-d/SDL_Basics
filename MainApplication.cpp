@@ -1,7 +1,15 @@
 #include "Rotator.h"
+#include "Starfield.h"
 #include "MainApplication.h"
+#include "TextScroller.h"
+#include "SDL_Extras.h"
 
 Rotator theRotator;
+Starfield theStarfield;
+TextScroller theScroller;
+
+CharacterTextureMap CharMap;
+
 float Sintable[SINTABSIZE];
 float Costable[SINTABSIZE];
 
@@ -38,7 +46,7 @@ bool MainApplication::OnInit()
 	}
 
 	int r = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	int flags = MIX_INIT_OGG | MIX_INIT_MOD|MIX_INIT_MP3;
+	int flags = MIX_INIT_OGG | MIX_INIT_MOD | MIX_INIT_MP3;
 
 	if (SDL_NumJoysticks() > 0) GamePad = SDL_JoystickOpen(0);
 
@@ -48,15 +56,14 @@ bool MainApplication::OnInit()
 		WindowFrame.y,
 		WindowFrame.w,
 		WindowFrame.h,
-		SDL_WINDOW_SHOWN)
+		SDL_WINDOW_HIDDEN)
 		) == nullptr) return false;
 
 	if ((Renderer = SDL_CreateRenderer(AppWindow, -1, SDL_RENDERER_ACCELERATED)) == nullptr) return false;
 
-#ifdef MUSIC
-	tune = Mix_LoadMUS("Resources/music/The impossible Mission.mp3");
-	Mix_PlayMusic(tune, -1);
-#endif
+	// Create a texure map from a string 
+	_font = TTF_OpenFont("Resources/fonts/segoeui.ttf", 48);
+	CharMap = SDL_GetTexturesFromString(Renderer, " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜßabcdefghijklmnopqrstuvwxyzäöü,.;:*#-_|<>^°?=()!\"§$%&/()@€~", _font, { 0,0,0, 255 });
 
 	double alpha = 0.0;
 	for (int i = 0; i < SINTABSIZE; i++)
@@ -68,6 +75,29 @@ bool MainApplication::OnInit()
 
 	theRotator = Rotator(Renderer, WindowFrame);
 	theRotator.OnInit();
+	theStarfield = Starfield(Renderer, WindowFrame);
+	theStarfield.OnInit();
+
+	string s = "Hank Van Bastard presents:                                                                  A Galactic Geometry Show.                                                                                        \
+Ain't math beautiful? A simple polygon, some colors and a little M*A*T*H.                   \
+Right now this piece of code uses (mathematically) 2D scaling, rotation and translation. That's it.                                              \
+Hank used the follwoing  tools to create this ride:   Visual Studio Community,  GeoGebra,  Git, Gimp, Inkscape.                                       \
+And of course in this case specifically the SDL-Library.                                   \
+All these great tools are free software.    Thanks for the excellent stuff dudes - it's very much appreciated.                                                \
+Idea by Hank, Coding: Hank.                                                               \
+Music: 'The Impossible Mission' by Alien Sex Fiend.                                                                            \
+In case you'd like to contact the author, send a message to                                      'hankvanbastard@gmail.com'                                                              \
+Remember:    a bastard's work is never done.";
+	SDL_Rect dRect = { 200, WindowFrame.h - 200, WindowFrame.w - 400, 200 };
+	theScroller.OnInit(Renderer, s, _font, { 255, 255, 255, 255 }, 6, dRect);
+
+#ifdef MUSIC
+	tune[0] = Mix_LoadMUS("Resources/music/Desolation.mp3");
+	tune[1] = Mix_LoadMUS("Resources/music/GhostWalking.mp3");
+	tune[2] = Mix_LoadMUS("Resources/music/The impossible Mission.mp3");
+#endif
+
+	SDL_ShowWindow(AppWindow);
 
 	return true;
 }
@@ -121,17 +151,62 @@ int MainApplication::OnExecute()
 
 void MainApplication::OnLoop()
 {
-	theRotator.OnLoop();
+	theStarfield.OnLoop();
+	if (_initPause > 0)
+	{
+		_initPause--;
+	}
+	else
+	{
+		theRotator.OnLoop();
+	}
+	theScroller.OnLoop();
+
+#ifdef MUSIC
+	if (Mix_PlayingMusic() == 0)
+	{
+		Mix_PlayMusic(tune[2], 1);
+	}
+#endif
 }
 
 void MainApplication::OnRender()
 {
-	theRotator.OnRender();
+	SDL_Color c = { 0,0,0,255 };
+	SDL_Rect srect;
+	srect.x = 0;
+	srect.y = 0;
+	srect.w = WindowFrame.w;
+	srect.h = WindowFrame.h;
+
+	SDL_SetRenderDrawColor(Renderer, c.r, c.g, c.b, 255);
+	SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND);
+	SDL_RenderSetClipRect(Renderer, &srect);
+	// clear Target
+	SDL_RenderClear(Renderer);
+	// black background
+	SDL_RenderFillRect(Renderer, &srect);
+
+	SDL_RenderSetClipRect(Renderer, &srect);
+	theStarfield.OnRender();
+	theScroller.OnRender();
+	if (_initPause > 0)
+	{
+		_initPause--;
+	}
+	else
+	{
+		theRotator.OnRender();
+	}
+	
 	SDL_RenderPresent(Renderer);
 }
 
 void MainApplication::OnCleanup()
 {
+	theStarfield.OnCleanup();
+	theRotator.OnCleanup();
+	theScroller.OnCleanUp();
 }
 
 void MainApplication::OnExit()

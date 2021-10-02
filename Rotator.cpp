@@ -6,11 +6,13 @@ Rotator::Rotator()
 
 Rotator::Rotator(SDL_Renderer* rend, SDL_FRect winFrame)
 {
-	_renderer = rend;
 	_windowFrame.w = winFrame.w;
 	_windowFrame.h = winFrame.h;;
 	_windowFrame.x = winFrame.x;
 	_windowFrame.y = winFrame.y;
+
+	_renderer = rend;
+	
 }
 
 bool Rotator::OnInit()
@@ -117,14 +119,8 @@ void Rotator::OnRender()
 {
 	SDL_FPoint fp = { _windowFrame.w / 2, _windowFrame.h / 2 };
 	SDL_FPoint rp = { _windowFrame.w / 2, _windowFrame.h / 2 };
-	//SDL_Color c = { 255,220,200,255 };
-	SDL_Color c = { 0,0,0,255 };
-	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, 255);
-	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
-	SDL_RenderSetClipRect(_renderer, nullptr);
-	SDL_RenderClear(_renderer);
-	SDL_RenderFillRect(_renderer, nullptr);
-
+	
+	SDL_Color c = { 255,220,200,255 };
 	c = { 255,255,0,255 };
 	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, c.a);
 	_starfigure.TranslatePoints(true, fp);
