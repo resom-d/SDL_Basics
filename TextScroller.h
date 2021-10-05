@@ -1,5 +1,6 @@
 #pragma once
 #include "Basics.h"
+#include "FontMap.h"
 
 extern float Sintable[SINTABSIZE];
 extern float Costable[SINTABSIZE];
@@ -21,20 +22,22 @@ public:
 	SDL_Rect DisplayRect;
 	bool	 GotRenderItems = false;
 
-	void OnInit(SDL_Renderer* rend, string msg, TTF_Font* font, SDL_Color clr, Uint16 speed, SDL_Rect dispRect);
+	void OnInit(SDL_Renderer* rend, string msg, FontMap fontMap, SDL_Color clr, Uint16 speed, SDL_Rect dispRect);
 	void OnLoop(void);
 	void OnRender(void);
 	void OnCleanUp(void);
 	void OnReset(void);
+	void SetSinusSize(float size);
 
 private:
 
 protected:
 	string _theMessage;
 	Sint16 _speed;
+	float _sinSize=24.0;
 	CharacterTextureMap _charMap;
 	SDL_Renderer* _rend;
-	TTF_Font *_font;
+	FontMap _fontMap;
 	SDL_Color _fontColor = { 0, 0, 0, 255 };
 	int _currentPosition=0;
 	list<CharItem> _screenItems;

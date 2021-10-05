@@ -186,6 +186,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ChaosTris.cpp" />
+    <ClCompile Include="FontMap.cpp" />
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="Pointlist2D.cpp" />
     <ClCompile Include="Rotator.cpp" />
@@ -194,7 +196,9 @@
     <ClCompile Include="TextScroller.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChaosTris.h" />
     <ClInclude Include="EngineBase.h" />
+    <ClInclude Include="FontMap.h" />
     <ClInclude Include="MainApplication.h" />
     <ClInclude Include="Pointlist2D.h" />
     <ClInclude Include="Rotator.h" />

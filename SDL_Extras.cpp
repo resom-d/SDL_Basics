@@ -1,47 +1,5 @@
 #include "SDL_Extras.h"
 
-CharacterTextureMap SDL_GetTexturesFromString(SDL_Renderer* rend, string aString, TTF_Font* font, SDL_Color color)
-{
-	unordered_map<char, SDL_Texture*> chars;
-
-
-	for (auto iter = aString.begin(); iter != aString.end(); iter++)
-	{
-		char c = *iter;
-		char txt[2] = { c, '\0' };
-
-		SDL_Surface* surf = TTF_RenderText_Solid(font, txt, color);
-		SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surf);
-		chars.insert({ c, tex });
-	}
-
-	return chars;
-}
-
-void SDL_RenderStringAt(SDL_Renderer* rend, string text, SDL_Point p, CharacterTextureMap chars, Uint16 size, SDL_Rect* clipRect)
-{
-	SDL_Rect destRect{ p.x, p.y, 0,0 };
-	SDL_Rect srcRect = { 0,0,0,0 };
-
-	SDL_SetRenderDrawBlendMode(rend, SDL_BLENDMODE_BLEND);
-	SDL_RenderSetClipRect(rend, clipRect);
-	for (auto iter = text.begin(); iter != text.end(); iter++)
-	{
-		char c = *iter;
-		int w, h;
-
-		SDL_QueryTexture(chars[c], nullptr, nullptr, &w, &h);
-
-		destRect.w = w;
-		destRect.h = h;
-		srcRect = { 0,0,w,h };
-		SDL_RenderCopy(rend, chars[c], &srcRect, &destRect);
-		destRect.x += w;
-	}
-	SDL_RenderSetClipRect(rend, nullptr);
-
-}
-
 inline void SDL_RenderSetPixel(SDL_Renderer* renderer, int x, int y, Uint8 red, Uint8 green, Uint8 blue, Uint8 alpha)
 {
 	SDL_SetRenderDrawColor(renderer, red, green, blue, alpha);
@@ -143,9 +101,14 @@ void SDL_RenderDrawBorder(SDL_Renderer* rend, SDL_Rect rect, Uint16 borderWidth,
 	SDL_RenderSetClipRect(rend, nullptr);
 }
 
-inline void SDL_RenderSetDrawColor(SDL_Renderer* rend, SDL_Color col)
+int SDL_RenderDrawFLine(SDL_Renderer* rend, SDL_FPoint p1, SDL_FPoint p2)
 {
-	SDL_SetRenderDrawColor(rend, col.r, col.g, col.b, col.a);
+	return SDL_RenderDrawLineF(rend, p1.x,p1.y,p2.x,p2.y);
+}
+
+int SDL_RenderSetDrawColor(SDL_Renderer* rend, SDL_Color col)
+{
+	return SDL_SetRenderDrawColor(rend, col.r, col.g, col.b, col.a);
 }
 
 void CreateWidgetTexture(SDL_Renderer* rend, string filePath, SDL_Texture* destTex, SDL_Rect srcRect, SDL_Rect destRect, double rot, SDL_RendererFlip flip)
@@ -166,8 +129,10 @@ void CreateWidgetTexture(SDL_Renderer* rend, string filePath, SDL_Texture* destT
 SDL_Texture* SDL_LoadTexture(SDL_Renderer* rend, path filename)
 {
 	SDL_Surface* surf = IMG_Load(filename.string().c_str());
-	if (surf == nullptr) return nullptr;
-	return SDL_CreateTextureFromSurface(rend, surf);
+	if (surf == nullptr) 
+		return nullptr;
+	else 
+		return SDL_CreateTextureFromSurface(rend, surf);
 }
 
 list<string> SplitString(string sourceString, const char splitter)

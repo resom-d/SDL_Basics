@@ -33,6 +33,12 @@
     <ClCompile Include="SDL_Extras.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="FontMap.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="ChaosTris.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="zlib1.dll">
@@ -119,6 +125,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="SDL_Extras.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="FontMap.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="ChaosTris.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

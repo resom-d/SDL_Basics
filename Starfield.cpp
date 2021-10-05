@@ -6,29 +6,28 @@ Starfield::Starfield()
 
 Starfield::Starfield(SDL_Renderer* rend, SDL_FRect winFrame)
 {
-	_windowFrame.w = winFrame.w;
-	_windowFrame.h = winFrame.h;;
-	_windowFrame.x = winFrame.x;
-	_windowFrame.y = winFrame.y;
+	
+}
 
+bool Starfield::OnInit(SDL_Renderer* rend, SDL_Window* win)
+{
 	_renderer = rend;
+	_window = win;
+	SDL_GetWindowSize(_window, &_windowFrame.w, &_windowFrame.h);
 
 	_stars = (SDL_Point**)SDL_malloc(_noStarKinds * sizeof(SDL_Point*));
 	for (int i = 0; i < _noStarKinds; i++)
 	{
 		_stars[i] = (SDL_Point*)SDL_malloc(_noStars * sizeof(SDL_Point));
 	}
-}
 
-bool Starfield::OnInit()
-{
-	srand(time(0));
+	//srand(time(0));
 
 	for (int i = 0; i < _noStarKinds; i++)
 	{
 		for (int j = 0; j < _noStars; j++)
 		{
-			_stars[i][j].x = rand() % (int)_windowFrame.w - _windowFrame.w;
+			_stars[i][j].x = (rand() % (int)_windowFrame.w) - _windowFrame.w; // start left outside of display
 			_stars[i][j].y = rand() % (int)_windowFrame.h;
 		}
 	}
@@ -52,7 +51,7 @@ void Starfield::OnLoop()
 		for (int j = 0; j < _noStars; j++)
 		{
 			_stars[i][j].x += _starSpeed[i];
-			if (_stars[i][j].x > (int)_windowFrame.w)
+			if (_stars[i][j].x > _windowFrame.w)
 			{
 				_stars[i][j].x = 0;
 			}

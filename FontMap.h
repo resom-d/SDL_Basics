@@ -1,7 +1,4 @@
-#ifndef BASICS_H
-#define BASICS_H
-
-#include "EngineBase.h"
+#pragma once
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -25,26 +22,26 @@ using boost::geometry::dsv;
 using namespace boost::geometry;
 using namespace std;
 
-struct  _polygon_2D {
-	SDL_FPoint* Points;
-	SDL_FPoint* PointsBuffer;
-	unsigned short CountP;
-	SDL_FPoint LocalOriginP;
-	SDL_Rect BoundingBox;
-};
-typedef struct _polygon_2D Polygon2D;
-
-
-#define MUSIC
-#define GlobalFrameRate (50)
-#define SINTABSIZE (720)
-
-
-typedef boost::geometry::model::point<double, 2, boost::geometry::cs::cartesian> Point2D;
-
 typedef unordered_map<char, SDL_Texture*> CharacterTextureMap;
-typedef list<SDL_Color> ColorPalette;
+
+class FontMap
+{
+public:
+	FontMap();
 
 
+	bool OnInit(SDL_Renderer* rend, string initChars, const char* font, SDL_Color color, Uint16 size);
+	SDL_Texture* GetTexture(char chr);
+	bool OnCleanUp();
+	int GetTexturesFromString(SDL_Renderer* rend, string aString, TTF_Font* font, SDL_Color color);
+	void RenderStringAt(SDL_Renderer* rend, string text, SDL_Point p, Uint16 size, SDL_Rect* clipRect);
 
-#endif
+private:
+	CharacterTextureMap _textureMap;
+	SDL_Renderer* _renderer;
+	TTF_Font* _font;
+	SDL_Color _color;
+	Uint16 _size;
+	
+};
+

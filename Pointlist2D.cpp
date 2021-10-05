@@ -2,35 +2,35 @@
 
 Pointlist2D::Pointlist2D()
 {
-	_geometry = vector<SDL_FPoint>();
-	_points = vector<SDL_FPoint>();
+	Geometry = vector<SDL_FPoint>();
+	Points = vector<SDL_FPoint>();
 }
 
 Pointlist2D::Pointlist2D(SDL_FPoint* points, Uint16 count)
 {
-	_geometry = vector<SDL_FPoint>();
-	_points = vector<SDL_FPoint>();
+	Geometry = vector<SDL_FPoint>();
+	Points = vector<SDL_FPoint>();
 
 	for (int i = 0; i < count; i++)
 	{
 		SDL_FPoint p = { points[i].x, points[i].y };
-		_geometry.push_back(points[i]);
-		_points.push_back(p);
+		Geometry.push_back(points[i]);
+		Points.push_back(p);
 	}
 	BringHome();
 }
 
 Pointlist2D::~Pointlist2D()
 {
-	_geometry.clear();
-	_points.clear();
+	Geometry.clear();
+	Points.clear();
 }
 
 void Pointlist2D::AppendPoints(SDL_FPoint* newPoints, Uint16 count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		_geometry.push_back(newPoints[i]);
+		Geometry.push_back(newPoints[i]);
 	}
 	BringHome();
 }
@@ -41,57 +41,56 @@ void Pointlist2D::DeletePointsAt(Uint16 start, Uint16 stop)
 
 void Pointlist2D::ScalePoints(bool fromSource, SDL_FPoint orgP, float scaleX, float scaleY)
 {
-	size_t  size = _geometry.size();
+	size_t  size = Geometry.size();
 
 	if (fromSource)
 	{
 		for (auto p = 0; p < size; p++)
 		{
-			_points[p].x = _geometry[p].x - orgP.x;
-			_points[p].y = _geometry[p].y - orgP.y;
+			Points[p].x = Geometry[p].x - orgP.x;
+			Points[p].y = Geometry[p].y - orgP.y;
 
-			_points[p].x *= scaleX;
-			_points[p].y *= scaleY;
+			Points[p].x *= scaleX;
+			Points[p].y *= scaleY;
 
-			_points[p].x += orgP.x;
-			_points[p].y += orgP.y;
+			Points[p].x += orgP.x;
+			Points[p].y += orgP.y;
 		}
 	}
 	else
 	{
 		for (auto p = 0; p < size; p++)
 		{
-			_points[p].x = _points[p].x - orgP.x;
-			_points[p].y = _points[p].y - orgP.y;
+			Points[p].x -= orgP.x;
+			Points[p].y -= orgP.y;
 
-			_points[p].x *= scaleX;
-			_points[p].y *= scaleY;
+			Points[p].x *= scaleX;
+			Points[p].y *= scaleY;
 
-			_points[p].x += orgP.x;
-			_points[p].y += orgP.y;
+			Points[p].x += orgP.x;
+			Points[p].y += orgP.y;
 		}
 	}
-
 }
 
 void Pointlist2D::RotatePoints(bool fromSource, SDL_FPoint orgP, int alpha)
 {
 	SDL_FPoint oldP;
-	size_t  size = _geometry.size();
+	size_t  size = Geometry.size();
 	alpha = alpha % SINTABSIZE;
-		
+
 	if (fromSource)
 	{
 		for (auto p = 0; p < size; p++)
 		{
-			oldP.x = _geometry[p].x - orgP.x;
-			oldP.y = _geometry[p].y - orgP.y;
+			oldP.x = Geometry[p].x - orgP.x;
+			oldP.y = Geometry[p].y - orgP.y;
 
-			_points[p].x = (oldP.x * Costable[alpha]) - (oldP.y * Sintable[alpha]);
-			_points[p].y = (oldP.x * Sintable[alpha]) + (oldP.y * Costable[alpha]);
+			Points[p].x = (oldP.x * Costable[alpha]) - (oldP.y * Sintable[alpha]);
+			Points[p].y = (oldP.x * Sintable[alpha]) + (oldP.y * Costable[alpha]);
 
-			_points[p].x += orgP.x;
-			_points[p].y += orgP.y;
+			Points[p].x += orgP.x;
+			Points[p].y += orgP.y;
 
 		}
 	}
@@ -99,88 +98,97 @@ void Pointlist2D::RotatePoints(bool fromSource, SDL_FPoint orgP, int alpha)
 	{
 		for (auto p = 0; p < size; p++)
 		{
-			oldP.x = _points[p].x - orgP.x;
-			oldP.y = _points[p].y - orgP.y;
+			oldP.x = Points[p].x - orgP.x;
+			oldP.y = Points[p].y - orgP.y;
 
-			_points[p].x = (oldP.x * Costable[alpha]) - (oldP.y * Sintable[alpha]);
-			_points[p].y = (oldP.x * Sintable[alpha]) + (oldP.y * Costable[alpha]);
+			Points[p].x = (oldP.x * Costable[alpha]) - (oldP.y * Sintable[alpha]);
+			Points[p].y = (oldP.x * Sintable[alpha]) + (oldP.y * Costable[alpha]);
 
-			_points[p].x += orgP.x;
-			_points[p].y += orgP.y;
+			Points[p].x += orgP.x;
+			Points[p].y += orgP.y;
 
 		}
 	}
 
-	
+
 
 }
 
 void Pointlist2D::TranslatePoints(bool fromSource, SDL_FPoint offP)
 {
-	size_t  size = _geometry.size();
-	
+	size_t  size = Geometry.size();
+
 	if (fromSource)
 	{
 		for (auto p = 0; p < size; p++)
 		{
-			_points[p].x = _geometry[p].x + offP.x;
-			_points[p].y = _geometry[p].y + offP.y;
+			Points[p].x = Geometry[p].x + offP.x;
+			Points[p].y = Geometry[p].y + offP.y;
 		}
 	}
 	else
 	{
 		for (auto p = 0; p < size; p++)
 		{
-			_points[p].x = _points[p].x + offP.x;
-			_points[p].y = _points[p].y + offP.y;
+			Points[p].x = Points[p].x + offP.x;
+			Points[p].y = Points[p].y + offP.y;
 		}
-	}	
+	}
 	CentreOfRotation.x = offP.x;
 	CentreOfRotation.y = offP.y;
 }
 
-void Pointlist2D::DrawPolygon(SDL_Renderer* rend, bool closed)
+void Pointlist2D::ShearPoints(bool fromSource, float shearX, float shearY)
 {
-	size_t size = _points.size();
-	for (auto l = 0; l < size - 1; l++)
+}
+
+int Pointlist2D::DrawPolygon(SDL_Renderer* rend, Uint16 polyNo)
+{
+	Uint16 source = polyNo - 1;
+	vector<Uint16> poly = Polygons[source];
+	Uint16 polySize = poly.size();
+	if (polySize % 2) return -1; // polygon corrupt (no. not even)
+	Uint16 point = 0;
+	SDL_FPoint p1, p2;
+
+	while (point < polySize)
 	{
-		SDL_RenderDrawLineF(rend, _points[l].x, _points[l].y, _points[l + 1].x, _points[l + 1].y);
+		p1 = Points[poly[point++]];
+		p2 = Points[poly[point++]];
+		SDL_RenderDrawFLine(rend, p1, p2);
 	}
-	if (closed)
-	{
-		SDL_RenderDrawLineF(rend, _points[size - 1].x, _points[size - 1].y, _points[0].x, _points[0].y);
-	}
+	return 0;
 }
 
 void Pointlist2D::BringHome()
 {
-	float minX = _geometry[0].x, maxX = _geometry[0].x, minY = _geometry[0].y, maxY = _geometry[0].y;
+	float minX = Geometry[0].x, maxX = Geometry[0].x, minY = Geometry[0].y, maxY = Geometry[0].y;
 
-	auto size = _geometry.size();
-	
+	auto size = Geometry.size();
+
 	setBoundingBox();
 	for (auto l = 0; l < size; l++)
 	{
-		_geometry[l].x -= CentreOfRotation.x;
-		_geometry[l].y -= CentreOfRotation.y;
+		Geometry[l].x -= CentreOfRotation.x;
+		Geometry[l].y -= CentreOfRotation.y;
 	}
 	setBoundingBox();
 }
 
 void Pointlist2D::setBoundingBox()
 {
-	float minX = _geometry[0].x, maxX = _geometry[0].x, minY = _geometry[0].y, maxY = _geometry[0].y;
+	float minX = Geometry[0].x, maxX = Geometry[0].x, minY = Geometry[0].y, maxY = Geometry[0].y;
 
-	for (int i = 1; i < _geometry.size(); i++)
+	for (int i = 1; i < Geometry.size(); i++)
 	{
-		minX = std::min(minX, _geometry[i].x);
-		maxX = std::max(maxX, _geometry[i].x);
-		minY = std::min(minY, _geometry[i].y);
-		maxY = std::max(maxY, _geometry[i].y);
+		minX = std::min(minX, Geometry[i].x);
+		maxX = std::max(maxX, Geometry[i].x);
+		minY = std::min(minY, Geometry[i].y);
+		maxY = std::max(maxY, Geometry[i].y);
 	}
 	BoundingBox.x = minX;
 	BoundingBox.y = minY;
-	BoundingBox.w =maxX - minX ;
+	BoundingBox.w = maxX - minX;
 	BoundingBox.h = maxY - minY;
 	CentreOfRotation.x = minX + BoundingBox.w / 2;
 	CentreOfRotation.y = minY + BoundingBox.h / 2;

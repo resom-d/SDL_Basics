@@ -8,7 +8,7 @@ public:
 	Starfield();
 	Starfield(SDL_Renderer* rend, SDL_FRect winFrame);
 
-	bool EngineBase::OnInit();
+	bool EngineBase::OnInit(SDL_Renderer* rend, SDL_Window* win);
 	void EngineBase::OnEvent(SDL_Event* Event);
 	int EngineBase::OnExecute();
 	void EngineBase::OnLoop();
@@ -19,8 +19,6 @@ public:
 	void OnKeyUp(SDL_Keycode sym, SDL_Keycode mod);
 
 private:
-	SDL_Renderer* _renderer = nullptr;
-	SDL_FRect _windowFrame;
 	static const  Uint16 _noStars = 196;
 	static const  Uint16 _noStarKinds = 5;
 	SDL_Color _starColors[_noStarKinds] = {

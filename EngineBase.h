@@ -7,7 +7,7 @@ using namespace std;
 class EngineBase{
 public:
 	// pure virtual function providing interface framework.
-	virtual bool OnInit() = 0;
+	virtual bool OnInit(SDL_Renderer *rend, SDL_Window *win) = 0;
 	virtual int OnExecute() = 0;
 	virtual void OnLoop() = 0;
 	virtual void OnRender() = 0;
@@ -15,6 +15,11 @@ public:
 	virtual void OnExit() = 0;
 	virtual void OnEvent(SDL_Event* Event) = 0;	
 
+private:
+
 protected:
+	SDL_Renderer* _renderer;
+	SDL_Window* _window;
+	SDL_Rect _windowFrame;
 
 };

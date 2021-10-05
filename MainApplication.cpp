@@ -1,14 +1,14 @@
+#include "SDL_Extras.h"
 #include "Rotator.h"
 #include "Starfield.h"
 #include "MainApplication.h"
 #include "TextScroller.h"
-#include "SDL_Extras.h"
+#include "FontMap.h"
 
+FontMap FontmapSeqgoe;
 Rotator theRotator;
 Starfield theStarfield;
 TextScroller theScroller;
-
-CharacterTextureMap CharMap;
 
 float Sintable[SINTABSIZE];
 float Costable[SINTABSIZE];
@@ -17,8 +17,34 @@ float Costable[SINTABSIZE];
 int main(int argc, char* argv[]) {
 
 	MainApplication theApp;
+	SDL_Window* AppWindow = NULL;;
+	SDL_Renderer* Renderer = NULL;
 
-	if (theApp.OnInit())
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	{
+		return false;
+	}
+
+	if ((AppWindow = SDL_CreateWindow(
+		"Hank's Playground",
+		50,
+		50,
+		1600,
+		900,
+		SDL_WINDOW_HIDDEN)
+		) == nullptr) return false;
+
+	if ((Renderer = SDL_CreateRenderer(AppWindow, -1, SDL_RENDERER_ACCELERATED)) == nullptr) return false;
+	// init mixer audio
+	int r = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	int flags = MIX_INIT_OGG | MIX_INIT_MOD | MIX_INIT_MP3;
+	// init TTF 
+	if (TTF_Init() == -1)
+	{
+		return false;
+	}
+
+	if (theApp.OnInit(Renderer, AppWindow))
 	{
 		return theApp.OnExecute();
 	}
@@ -27,57 +53,33 @@ int main(int argc, char* argv[]) {
 
 MainApplication::MainApplication()
 {
-	WindowFrame.w = 1600;
-	WindowFrame.h = 900;
-	WindowFrame.x = 50;
-	WindowFrame.y = 50;
 
 }
 
-bool MainApplication::OnInit()
+bool MainApplication::OnInit(SDL_Renderer* rend, SDL_Window* win)
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-	{
-		return false;
-	}
+	_window = win;
+	_renderer = rend;
 
-	if (TTF_Init() == -1)
-	{
-		return false;
-	}
-
-	int r = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	int flags = MIX_INIT_OGG | MIX_INIT_MOD | MIX_INIT_MP3;
-
-	if (SDL_NumJoysticks() > 0) GamePad = SDL_JoystickOpen(0);
-
-	if ((AppWindow = SDL_CreateWindow(
-		"Hank's Playground",
-		WindowFrame.x,
-		WindowFrame.y,
-		WindowFrame.w,
-		WindowFrame.h,
-		SDL_WINDOW_HIDDEN)
-		) == nullptr) return false;
-
-	if ((Renderer = SDL_CreateRenderer(AppWindow, -1, SDL_RENDERER_ACCELERATED)) == nullptr) return false;
+	SDL_GetWindowSize(_window, &_windowFrame.w, &_windowFrame.h);
+	_windowFrame.w = 1600;
+	_windowFrame.h = 900;
+	_windowFrame.x = 50;
+	_windowFrame.y = 50;
 
 	// Create a texure map from a string 
-	_font = TTF_OpenFont("Resources/fonts/segoeui.ttf", 48);
-	CharMap = SDL_GetTexturesFromString(Renderer, " 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜßabcdefghijklmnopqrstuvwxyzäöü,.;:*#-_|<>^°?=()!\"§$%&/()@€~", _font, { 0,0,0, 255 });
+	FontmapSeqgoe.OnInit(_renderer, "", "Resources/fonts/segoeui.ttf", { 255,255,255,255 }, 48);
 
 	double alpha = 0.0;
 	for (int i = 0; i < SINTABSIZE; i++)
 	{
-		Sintable[i] = (float)sin(alpha * M_PI / 180.0);
-		Costable[i] = (float)cos(alpha * M_PI / 180.0);
+		Sintable[i] = sinf(alpha * M_PI / 180.0);
+		Costable[i] = cosf(alpha * M_PI / 180.0);
 		alpha += 0.5f;
 	}
 
-	theRotator = Rotator(Renderer, WindowFrame);
-	theRotator.OnInit();
-	theStarfield = Starfield(Renderer, WindowFrame);
-	theStarfield.OnInit();
+	theRotator.OnInit(_renderer, _window);
+	theStarfield.OnInit(_renderer, _window);
 
 	string s = "Hank Van Bastard presents:                                                                  A Galactic Geometry Show.                                                                                                               \
 Ain't math beautiful? A simple polygon, some colors and a little M*A*T*H.                                               \
@@ -90,15 +92,15 @@ In case you'd like to contact the world's greatest bastard, send a message to   
 Remember:    a bastard's work is never done.";
 
 
-	SDL_Rect dRect = { 200, WindowFrame.h - 200, WindowFrame.w - 400, 200 };
-	theScroller.OnInit(Renderer, s, _font, { 255, 255, 255, 255 }, 6, dRect);
+	SDL_Rect dRect = { 200, _windowFrame.h, _windowFrame.w - 400, 200 };
+	theScroller.OnInit(_renderer, s, FontmapSeqgoe, { 255, 255, 255, 255 }, 6, dRect);
+
 
 #ifdef MUSIC
-	tune[0] = Mix_LoadMUS("Resources/music/TheSecret.ogg");	
+	tune[0] = Mix_LoadMUS("Resources/music/TheSecret.ogg");
 #endif
 
-	SDL_ShowWindow(AppWindow);
-
+	SDL_ShowWindow(_window);
 	return true;
 }
 
@@ -138,8 +140,10 @@ int MainApplication::OnExecute()
 		// make sure we are running at a constant frame rate
 		timerFPS_n = SDL_GetTicks();
 		timeDiff = timerFPS_n - timerFPS_1n;
-		if (timeDiff < 1000 / GlobalFrameRate) SDL_Delay((1000 / GlobalFrameRate) - timeDiff);
-
+		if (timeDiff < 1000 / GlobalFrameRate)
+		{
+			SDL_Delay((1000 / GlobalFrameRate) - timeDiff);
+		}
 	}
 
 	// don't leave a messy place
@@ -176,17 +180,16 @@ void MainApplication::OnRender()
 	SDL_Rect srect;
 	srect.x = 0;
 	srect.y = 0;
-	srect.w = WindowFrame.w;
-	srect.h = WindowFrame.h;
+	srect.w = _windowFrame.w;
+	srect.h = _windowFrame.h;
 
-	SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderDrawColor(Renderer, c.r, c.g, c.b, 255);
-	//SDL_SetRenderDrawBlendMode(Renderer, SDL_BLENDMODE_NONE);
-	SDL_RenderSetClipRect(Renderer, nullptr);
+	SDL_SetRenderDrawBlendMode(_renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(_renderer, c.r, c.g, c.b, 255);
+	SDL_RenderSetClipRect(_renderer, nullptr);
 	// clear Target
-	SDL_RenderClear(Renderer);
+	SDL_RenderClear(_renderer);
 	// black background
-	SDL_RenderFillRect(Renderer, &srect);
+	SDL_RenderFillRect(_renderer, &srect);
 
 	theStarfield.OnRender();
 	if (_initPause > 0)
@@ -197,14 +200,18 @@ void MainApplication::OnRender()
 	{
 		theRotator.OnRender();
 	}
+
 	theScroller.OnRender();
 
-	SDL_RenderPresent(Renderer);
+	SDL_RenderPresent(_renderer);
 }
 
 void MainApplication::OnCleanup()
 {
+#ifdef MUSIC
 	Mix_Quit();
+#endif
+	FontmapSeqgoe.OnCleanUp();
 	theStarfield.OnCleanup();
 	theRotator.OnCleanup();
 	theScroller.OnCleanUp();

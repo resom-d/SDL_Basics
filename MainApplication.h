@@ -7,12 +7,9 @@ class MainApplication : public EngineBase
 
 public:
 	MainApplication();
-	SDL_FRect WindowFrame;
-	SDL_Window* AppWindow = NULL;;
-	SDL_Renderer* Renderer= NULL;
 	SDL_Joystick* GamePad = NULL;
 	bool AppIsRunning = true;
-	bool EngineBase::OnInit();
+	bool EngineBase::OnInit(SDL_Renderer *rend, SDL_Window *win);
 	void EngineBase::OnEvent(SDL_Event* Event);
 	int EngineBase::OnExecute();
 	void EngineBase::OnLoop();
