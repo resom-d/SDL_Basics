@@ -53,6 +53,7 @@ void TextScroller::OnLoop()
 				item->ScreenPos.x--;
 				if (item->ScreenPos.x < DisplayRect.x - item->Width)
 				{
+					SDL_DestroyTexture(item->Texture);
 					item = _screenItems.erase(item);
 				}
 				if (_screenItems.size() < 1) break;

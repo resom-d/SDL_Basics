@@ -22,7 +22,7 @@ private:
 	FontMap _fontOne;
 	Uint16 _fontSize = 36;
 	list<CharItem> _screenItems;
-	string _theMessage = "This text is scrolling vertically.";
+	string _theMessage = "Democoding in 2021? Yes, 'cause it's fun and relaxing and enjoyable and beautiful and art as art can be.       Enjoy the show.                                 ";
 	Sint16 _speed = 8;
 	SDL_Color _fontColor = { 0, 0, 0, 255 };
 	int _currentPosition = 0;

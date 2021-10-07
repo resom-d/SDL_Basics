@@ -50,6 +50,7 @@ void  TextRoller::OnLoop()
 			item->ScreenPos.y--;
 			if (item->ScreenPos.y < (DisplayRect.y))
 			{
+				SDL_DestroyTexture(item->Texture);
 				item = _screenItems.erase(item);
 			}
 			if (_screenItems.size() < 1) break;

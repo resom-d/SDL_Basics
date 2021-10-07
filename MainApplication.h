@@ -21,17 +21,10 @@ public:
 	void OnKeyUp(SDL_Keycode sym, SDL_Keycode mod);
 
 private:
+	Uint32 _frameCounter;
 	TTF_Font* _font;
 	Mix_Music* tune[3];
 	Uint16 _actiTune=0;
-	float _rotMask = 0.0;
-	float _rotMask2 = 0.0;
-	float _rotBackgnd = 0.0;
-	float _rotBackgnd2 = 0.0;
-	Uint16 _level;
-	int _timerCatchLevelDone;
-	Uint32 _timeCatchChangeScreens;
-	Uint16 _initPause = 10 * GlobalFrameRate;
-	SDL_Texture* _texMask;
-	SDL_Texture* _texBackgnd;
+	Uint16 _initPause = 0 * GlobalFrameRate;
+	Uint16 _demoPart = 0;
 };
