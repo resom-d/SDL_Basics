@@ -1,6 +1,6 @@
 #pragma once
 #include <SDL.h>
-
+#include "Basics.h"
 using namespace std;
 
 // Base class

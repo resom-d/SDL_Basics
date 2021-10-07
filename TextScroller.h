@@ -1,18 +1,10 @@
 #pragma once
+#include "EngineBase.h"
 #include "Basics.h"
 #include "FontMap.h"
 
 extern float Sintable[SINTABSIZE];
 extern float Costable[SINTABSIZE];
-
-typedef struct CharItem
-{
-	char Content;
-	Uint16 Width;
-	Uint16 Height;
-	SDL_Point ScreenPos;
-	SDL_Texture* Texture;
-};
 
 class TextScroller
 {

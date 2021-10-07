@@ -1,7 +1,5 @@
 #ifndef BASICS_H
 #define BASICS_H
-
-#include "EngineBase.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>

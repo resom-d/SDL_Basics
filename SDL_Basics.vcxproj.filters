@@ -39,6 +39,9 @@
     <ClCompile Include="ChaosTris.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="TextRoller.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="zlib1.dll">
@@ -133,6 +136,9 @@
     <ClInclude Include="ChaosTris.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="TextRoller.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SDL_GameBase.rc">
@@ -154,5 +160,16 @@
     <Font Include="Resources\fonts\segoeui.ttf">
       <Filter>Ressourcendateien</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\graphics\checker.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Resources\graphics\galaxy.jpg">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Resources\graphics\spiral.png">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
   </ItemGroup>
 </Project>

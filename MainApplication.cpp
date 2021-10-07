@@ -3,12 +3,14 @@
 #include "Starfield.h"
 #include "MainApplication.h"
 #include "TextScroller.h"
+#include "TextRoller.h"
 #include "FontMap.h"
 
 FontMap FontmapSeqgoe;
 Rotator theRotator;
 Starfield theStarfield;
 TextScroller theScroller;
+TextRoller theRoller;
 
 float Sintable[SINTABSIZE];
 float Costable[SINTABSIZE];
@@ -91,10 +93,11 @@ Idea and coding: Hank.                                                  Music: '
 In case you'd like to contact the world's greatest bastard, send a message to                                      'hankvanbastard@gmail.com'                                                              \
 Remember:    a bastard's work is never done.";
 
-
+	_texMask = SDL_LoadTexture(_renderer, "Resources/graphics/checker.png");
+	_texBackgnd = SDL_LoadTexture(_renderer, "Resources/graphics/spiral.png");
 	SDL_Rect dRect = { 200, _windowFrame.h, _windowFrame.w - 400, 200 };
 	theScroller.OnInit(_renderer, s, FontmapSeqgoe, { 255, 255, 255, 255 }, 6, dRect);
-
+	theRoller.OnInit(_renderer, _window);
 
 #ifdef MUSIC
 	tune[0] = Mix_LoadMUS("Resources/music/TheSecret.ogg");
@@ -172,11 +175,12 @@ void MainApplication::OnLoop()
 #endif
 	}
 	theScroller.OnLoop();
+	theRoller.OnLoop();
 }
 
 void MainApplication::OnRender()
 {
-	SDL_Color c = { 0,0,0,255 };
+	SDL_Color c = { 0, 180, 255, 255 };
 	SDL_Rect srect;
 	srect.x = 0;
 	srect.y = 0;
@@ -191,7 +195,7 @@ void MainApplication::OnRender()
 	// black background
 	SDL_RenderFillRect(_renderer, &srect);
 
-	theStarfield.OnRender();
+	/*theStarfield.OnRender();
 	if (_initPause > 0)
 	{
 		_initPause--;
@@ -202,8 +206,19 @@ void MainApplication::OnRender()
 	}
 
 	theScroller.OnRender();
-
+	theRoller.OnRender();*/
+	int h, w;
+	SDL_QueryTexture(_texMask, nullptr, nullptr, &w, &h);
+	SDL_Rect drect = { -((w - 1600) / 2), -((h - 900) / 2), w, h };
+	SDL_RenderCopyEx(_renderer, _texBackgnd, nullptr, &drect, _rotBackgnd, nullptr, SDL_FLIP_NONE);
+	//SDL_RenderCopyEx(_renderer, _texBackgnd, nullptr, &drect, _rotBackgnd2, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(_renderer, _texMask, nullptr, &drect, _rotMask, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(_renderer, _texMask, nullptr, &drect, -_rotMask2, nullptr, SDL_FLIP_NONE);
 	SDL_RenderPresent(_renderer);
+	_rotMask += 0.05;
+	_rotMask2 += 0.05;
+	_rotBackgnd += 0.4;
+	_rotBackgnd2 += 6;
 }
 
 void MainApplication::OnCleanup()

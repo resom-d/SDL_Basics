@@ -24,6 +24,15 @@ using namespace std;
 
 typedef unordered_map<char, SDL_Texture*> CharacterTextureMap;
 
+typedef struct CharItem
+{
+	char Content;
+	int Width;
+	int Height;
+	SDL_Point ScreenPos;
+	SDL_Texture* Texture;
+};
+
 class FontMap
 {
 public:
@@ -42,6 +51,6 @@ private:
 	TTF_Font* _font;
 	SDL_Color _color;
 	Uint16 _size;
-	
+
 };
 
