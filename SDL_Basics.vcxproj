@@ -87,8 +87,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\_DevIncludes\SDL2-2.0.10\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\_DevIncludes\boost_1_72_0\lib64-msvc-14.2;C:\_DevIncludes\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\VC\SDL2-2.0.10\include;C:\VC\boost_1_72_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\VC\boost_1_72_0\lib64-msvc-14.2;C:\VC\SDL2-2.0.10\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -174,7 +174,7 @@
       <AdditionalLibraryDirectories>C:\_DevIncludes\boost_1_72_0\lib64-msvc-14.2;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>XCOPY "$(SolutionDir)\Resources" "$(TargetDir)\Resources" /C  /Y /S</Command>
+      <Command>XCOPY "$(SolutionDir)\Resources\" "$(TargetDir)\Resources\" /C  /Y /S</Command>
     </PreBuildEvent>
     <CustomBuildStep>
       <Command>
@@ -186,20 +186,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ChaosTris.cpp" />
     <ClCompile Include="CheckerboardRotation.cpp" />
     <ClCompile Include="FontMap.cpp" />
     <ClCompile Include="MainApplication.cpp" />
     <ClCompile Include="Mesh3D.cpp" />
     <ClCompile Include="Pointlist2D.cpp" />
     <ClCompile Include="Rotator.cpp" />
+    <ClCompile Include="SDLEvents.cpp" />
     <ClCompile Include="SDL_Extras.cpp" />
     <ClCompile Include="Starfield.cpp" />
     <ClCompile Include="TextRoller.cpp" />
     <ClCompile Include="TextScroller.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChaosTris.h" />
     <ClInclude Include="CheckerboardRotation.h" />
     <ClInclude Include="EngineBase.h" />
     <ClInclude Include="FontMap.h" />
@@ -208,9 +207,9 @@
     <ClInclude Include="Mesh3D.h" />
     <ClInclude Include="Pointlist2D.h" />
     <ClInclude Include="Rotator.h" />
-    <ClInclude Include="GameEvents.h" />
     <ClInclude Include="Basics.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SDLEvents.h" />
     <ClInclude Include="SDL_Extras.h" />
     <ClInclude Include="Starfield.h" />
     <ClInclude Include="TextRoller.h" />

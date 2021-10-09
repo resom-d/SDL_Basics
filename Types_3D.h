@@ -1,6 +1,5 @@
 #pragma once
 
-
 struct _point3d {
 	int X;
 	int Y;
@@ -33,6 +32,9 @@ struct _geometry3d {
 	Uint16 NoFace = 0;
 	Uint16 NoEdge = 0;
 	Uint16 NoVertex = 0;
+	list<list<Uint16>> Faces;
+	list<pair<Uint16, Uint16>> Edges;
+	list<Point3D> Points;
 	FPoint3D Rotation;
 	Point3D OriginPoint;
 	Point3D CentreOfRotation;
@@ -43,9 +45,13 @@ struct _fgeometry3d {
 	Uint16 NoFace = 0;
 	Uint16 NoEdge = 0;
 	Uint16 NoVertex = 0;
-	FPoint3D Rotation;
+	list<list<Uint16>> Faces;
+	list<pair<Uint16, Uint16>> Edges;
+	list<FPoint3D> Points;
+	FBoundingBox3D BoundingBox;
 	FPoint3D OriginPoint;
 	FPoint3D CentreOfRotation;
-	FBoundingBox3D BoundingBox;
+	FPoint3D Rotation;
+	float Scale;
 };
 typedef struct _fgeometry3d FGeometry3D;

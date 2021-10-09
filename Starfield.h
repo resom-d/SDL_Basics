@@ -9,7 +9,7 @@ public:
 	Starfield(SDL_Renderer* rend, SDL_FRect winFrame);
 
 	bool EngineBase::OnInit(SDL_Renderer* rend, SDL_Window* win);
-	void EngineBase::OnEvent(SDL_Event* Event);
+	void EngineBase::OnEvent(SDL_Event* event);
 	int EngineBase::OnExecute();
 	void EngineBase::OnLoop();
 	void EngineBase::OnRender();

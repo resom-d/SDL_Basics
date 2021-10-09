@@ -11,7 +11,7 @@ public:
 	virtual void OnRender() = 0;
 	virtual void OnCleanup() = 0;
 	virtual void OnExit() = 0;
-	virtual void OnEvent(SDL_Event* Event) = 0;	
+	virtual void OnEvent(SDL_Event* event) = 0;	
 
 private:
 

@@ -6,13 +6,15 @@
 #include "TextRoller.h"
 #include "FontMap.h"
 #include "CheckerboardRotation.h"
+#include "Mesh3D.h"
 
 FontMap FontmapSeqgoe;
 Rotator theRotator;
 Starfield theStarfield;
 TextScroller theScroller;
-TextRoller theRoller;
+//TextRoller theRoller;
 CheckerboardRotation theChecker;
+Mesh3D theBoxMesh;
 
 float Sintable[SINTABSIZE];
 float Costable[SINTABSIZE];
@@ -62,6 +64,8 @@ MainApplication::MainApplication()
 
 bool MainApplication::OnInit(SDL_Renderer* rend, SDL_Window* win)
 {
+	FGeometry3D geo = theBoxMesh.CreateBoxMesh(1.0);
+
 	_window = win;
 	_renderer = rend;
 
@@ -98,7 +102,6 @@ Remember:    a bastard's work is never done.";
 
 	SDL_Rect dRect = { 200, _windowFrame.h, _windowFrame.w - 400, 200 };
 	theScroller.OnInit(_renderer, s, FontmapSeqgoe, { 255, 255, 255, 255 }, 6, dRect);
-	theRoller.OnInit(_renderer, _window);
 	theChecker.OnInit(_renderer, _window);
 
 #ifdef MUSIC
@@ -111,15 +114,22 @@ Remember:    a bastard's work is never done.";
 
 void MainApplication::OnEvent(SDL_Event* Event)
 {
-	SDL_Event anEvent;
-	while (SDL_PollEvent(&anEvent) && AppIsRunning)
+	switch (Event->type)
 	{
-		switch (anEvent.type)
+	case SDL_QUIT:
+		AppIsRunning = false;
+		break;
+
+	case SDL_KEYDOWN:
+		if (((SDL_KeyboardEvent*)Event)->keysym.sym == SDLK_RIGHT)
 		{
-		case SDL_QUIT:
-			AppIsRunning = false;
-			break;
+			if (_demoPart < 2) _demoPart++;
 		}
+		if (((SDL_KeyboardEvent*)Event)->keysym.sym == SDLK_LEFT)
+		{
+			if (_demoPart > 0)_demoPart--;
+		}
+		break;
 	}
 }
 
@@ -135,12 +145,15 @@ int MainApplication::OnExecute()
 		timerFPS_1n = SDL_GetTicks();
 
 		//grab events	
-		while (SDL_PollEvent(&AppEvent)) OnEvent(&AppEvent);
-
+		while (SDL_PollEvent(&AppEvent))
+		{
+			OnEvent(&AppEvent);
+		}
 		// execute all logic
 		OnLoop();
 		// do all rendering
 		OnRender();
+		//
 
 		// make sure we are running at a constant frame rate
 		timerFPS_n = SDL_GetTicks();
@@ -167,10 +180,13 @@ void MainApplication::OnLoop()
 	}
 	else
 	{
-		if (_demoPart % 2 == 0) {
-			theRotator.OnLoop();
+		if (_demoPart % 3 == 0) {
+			theRotator.OnLoopPhase_1();
 		}
-		else if (_demoPart % 2 == 1) {
+		else if (_demoPart % 3 == 1) {
+			theRotator.OnLoopPhase_2();
+		}
+		else if (_demoPart % 3 == 2) {
 			theChecker.OnLoop();
 		}
 #ifdef MUSIC
@@ -180,23 +196,19 @@ void MainApplication::OnLoop()
 		}
 #endif
 	}
-	theScroller.OnLoop();
-	theRoller.OnLoop();
+	//theScroller.OnLoop();
 
 	_frameCounter++;
-	if (_frameCounter %(30 * GlobalFrameRate)  == 0)
-	{
-		_demoPart++;
-	}
+
 }
 
 void MainApplication::OnRender()
 {
 	SDL_Color c;
-	if (_demoPart % 2 == 0) {
+	if (_demoPart % 3 == 0 || _demoPart % 3 == 1) {
 		c = { 0, 0, 0, 255 };
 	}
-	else if (_demoPart % 2 == 1) {
+	else if (_demoPart % 3 == 2) {
 		c = { 0, 180, 255, 255 };
 	}
 	SDL_Rect srect;
@@ -219,17 +231,20 @@ void MainApplication::OnRender()
 	}
 	else
 	{
-		if (_demoPart % 2 == 0) {
+		if (_demoPart % 3 == 0) {
 			theStarfield.OnRender();
-			theRotator.OnRender();
+			theRotator.OnRenderPhase_1();
 		}
-		else if (_demoPart % 2 == 1) {
+		else if (_demoPart % 3 == 1) {
+			theStarfield.OnRender();
+			theRotator.OnRenderPhase_2();
+		}
+		else if (_demoPart % 3 == 2) {
 			theChecker.OnRender();
 		}
 	}
 
-	theRoller.OnRender();
-	theScroller.OnRender();
+	//theScroller.OnRender();
 
 	SDL_RenderPresent(_renderer);
 
@@ -244,8 +259,8 @@ void MainApplication::OnCleanup()
 	theStarfield.OnCleanup();
 	theRotator.OnCleanup();
 	theScroller.OnCleanUp();
-	theRoller.OnCleanup();
 	theChecker.OnCleanup();
+	Mix_FreeMusic(tune[0]);
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(_window);
 }

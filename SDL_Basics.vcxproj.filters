@@ -36,9 +36,6 @@
     <ClCompile Include="FontMap.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="ChaosTris.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="TextRoller.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Mesh3D.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLEvents.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,9 +109,6 @@
     <ClInclude Include="Rotator.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="GameEvents.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Basics.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -139,9 +136,6 @@
     <ClInclude Include="FontMap.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="ChaosTris.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="TextRoller.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -158,6 +152,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="FTransform_3D.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLEvents.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

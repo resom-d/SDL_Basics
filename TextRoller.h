@@ -16,7 +16,7 @@ public:
 	void  EngineBase::OnRender();
 	void  EngineBase::OnCleanup();
 	void  EngineBase::OnExit();
-	void  EngineBase::OnEvent(SDL_Event* Event);
+	void  EngineBase::OnEvent(SDL_Event* event);
 
 private:
 	FontMap _fontOne;

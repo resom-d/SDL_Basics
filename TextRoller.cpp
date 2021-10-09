@@ -93,7 +93,7 @@ void  TextRoller::OnCleanup()
 void  TextRoller::OnExit()
 {}
 
-void  TextRoller::OnEvent(SDL_Event* Event)
+void  TextRoller::OnEvent(SDL_Event* event)
 {
 
 }
